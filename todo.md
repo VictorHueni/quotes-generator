@@ -1,3 +1,5 @@
 # Tasks List
 - [ ] Add quotes to localQuotes
-- [ ] Switch from local to api
+- [x] Switch from local to api
+- [ ] Toggle button for switch source to indicate on which I am positionnate on the top right
+- [ ] Transform the script.js in a quotes class
