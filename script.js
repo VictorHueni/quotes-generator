@@ -8,22 +8,46 @@ const authorText = document.getElementById('author');
 const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
 const switchSourceBtn = document.getElementById('switch-source');
+const loader = document.getElementById('loader');
 
 let UsingAPI = true;
+let apiQuotes = [];
+
+/* ================================  LOADING =======================================*/
+
+// Show loading
+function loading() {
+    loader.hidden = false;
+    quoteContainer.hidden = true;
+}
+// Hide Loading
+function complete() {
+    loader.hidden = true;
+    quoteContainer.hidden = false;
+}
+
+/* ================================  QUOTES =======================================*/
 
 //Get a quote randomly using either a local source or the API
 async function getQuote() {
+    loading();
+
     let arrQuotes = [];
     let quote;
 
     if (UsingAPI) {
-        arrQuotes = await getQuotesAPI();
+        if (apiQuotes.length == 0) {
+            apiQuotes = await getQuotesAPI();
+        }
+        arrQuotes = apiQuotes;
     } else {
         arrQuotes = await getQuotesLocal();
     }
+
     //Get the quote ramdoly in the array of quotes
     quote = arrQuotes[Math.floor(Math.random() * arrQuotes.length)];
     putQuoteInDOM(quote);
+    complete();
 }
 
 // Get Quotes from API
@@ -44,6 +68,8 @@ async function getQuotesLocal() {
     });
 }
 
+/* ===========  DOM ===============================================================*/
+
 function putQuoteInDOM(quote) {
     authorText.textContent = !quote.author ? 'Anonymous' : quote.author;
     if (quote.text.length > MAX_QUOTES_LENGTH) {
@@ -54,9 +80,13 @@ function putQuoteInDOM(quote) {
     quoteText.textContent = quote.text;
 }
 
+/* ===========  SOURCE ============================================================*/
+
 function switchSource() {
     UsingAPI = !UsingAPI
 }
+
+/* ===========  TWITTER ===========================================================*/
 
 // Tweet a quote
 function tweetQuote() {
@@ -64,10 +94,12 @@ function tweetQuote() {
     window.open(twitterUrl, '_blank');
 }
 
+/* ===========  EVENT LISTENERS ===================================================*/
+
 // Event Listeners
 newQuoteBtn.addEventListener('click', getQuote);
 twitterBtn.addEventListener('click', tweetQuote);
 switchSourceBtn.addEventListener('click', switchSource);
 
-//On Load
+/* ===========  ON LOAD ===========================================================*/
 getQuote();
