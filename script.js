@@ -1,9 +1,20 @@
-let apiQuotes = [];
+import * as local from './quotes.js';
+
+//let apiQuotes = [];
+
+
 
 //Show new quote
 function newQuote() {
     /// Pick a random quote from apiQUotes array
     const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
+    console.log(quote);
+}
+
+function newQuote() {
+    /// Pick a random quote from apiQUotes array
+    const arrLocal = local.localQuotes;
+    const quote = arrLocal[Math.floor(Math.random() * arrLocal.length)];
     console.log(quote);
 }
 
@@ -20,4 +31,5 @@ async function getQuotes() {
 }
 
 //On Load
-getQuotes();
+//getQuote();
+newQuote();
