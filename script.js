@@ -15,13 +15,12 @@ let apiQuotes = [];
 
 /* ================================  LOADING =======================================*/
 
-// Show loading
-function loading() {
+function showLoadingSpinner() {
     loader.hidden = false;
     quoteContainer.hidden = true;
 }
-// Hide Loading
-function complete() {
+
+function removeLoadingSpinner() {
     loader.hidden = true;
     quoteContainer.hidden = false;
 }
@@ -30,7 +29,7 @@ function complete() {
 
 //Get a quote randomly using either a local source or the API
 async function getQuote() {
-    loading();
+    showLoadingSpinner();
 
     let arrQuotes = [];
     let quote;
@@ -47,7 +46,7 @@ async function getQuote() {
     //Get the quote ramdoly in the array of quotes
     quote = arrQuotes[Math.floor(Math.random() * arrQuotes.length)];
     putQuoteInDOM(quote);
-    complete();
+    removeLoadingSpinner();
 }
 
 // Get Quotes from API
@@ -58,6 +57,7 @@ async function getQuotesAPI() {
         return await response.json();
     } catch (error) {
         //Catch Error Here
+        //Try 10 times and stop to inform user
     }
 }
 
@@ -66,6 +66,7 @@ async function getQuotesLocal() {
     return new Promise((resolve, reject) => {
         resolve(local.localQuotes);
     });
+    //add reject
 }
 
 /* ===========  DOM ===============================================================*/
